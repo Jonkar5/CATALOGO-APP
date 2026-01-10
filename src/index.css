@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@media print {
+  @page {
+    margin: 0;
+    size: auto;
+  }
+
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: auto;
+  }
+
+  #printable-area {
+    margin: 0;
+    padding: 0;
+    width: 210mm;
+    box-shadow: none !important;
+    overflow: visible;
+    transform: scale(0.99);
+    /* Slightly shrink to verify fit */
+    transform-origin: top left;
+  }
+
+  /* Ensure background colors are printed */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Ensure background colors are printed */
+* {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
