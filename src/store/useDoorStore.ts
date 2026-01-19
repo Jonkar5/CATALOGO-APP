@@ -10,6 +10,7 @@ interface DoorState {
     addDoor: (door: Door) => void;
     removeDoor: (id: string) => void;
     updateDoor: (id: string, updated: Partial<Door>) => void;
+    moveDoor: (id: string, direction: 'up' | 'down') => void;
     setGeneralNotes: (notes: string) => void;
     setClientInfo: (info: ClientInfo) => void;
     setEditingDoorId: (id: string | null) => void;
@@ -40,6 +41,18 @@ export const useDoorStore = create<DoorState>()(
                 doors: state.doors.map((d) => (d.id === id ? { ...d, ...updated } : d)),
                 editingDoorId: null
             })),
+            moveDoor: (id, direction) => set((state) => {
+                const index = state.doors.findIndex((d) => d.id === id);
+                if (index === -1) return state;
+
+                const newIndex = direction === 'up' ? index - 1 : index + 1;
+                if (newIndex < 0 || newIndex >= state.doors.length) return state;
+
+                const newDoors = [...state.doors];
+                [newDoors[index], newDoors[newIndex]] = [newDoors[newIndex], newDoors[index]];
+
+                return { doors: newDoors };
+            }),
             setGeneralNotes: (notes) => set({ generalNotes: notes }),
             setClientInfo: (info) => set({ clientInfo: info }),
             setEditingDoorId: (id) => set({ editingDoorId: id }),

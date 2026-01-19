@@ -145,7 +145,7 @@ export function DocumentPreview() {
                                             <div className="flex-1 flex flex-col justify-between h-full py-1">
                                                 <div className="flex justify-between items-start border-b border-neutral-100 pb-3 mb-2">
                                                     <div>
-                                                        <h3 className="text-2xl font-black text-neutral-900 tracking-tight leading-none mb-1">{door.name}</h3>
+                                                        <h3 className="text-base font-black text-neutral-900 tracking-tight leading-none mb-1">{door.name}</h3>
                                                         <div className="flex items-center gap-2">
                                                             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Modelo</span>
                                                             <p className="text-xs font-bold text-neutral-900">{door.model}</p>
@@ -154,8 +154,8 @@ export function DocumentPreview() {
                                                     <div className="text-right">
                                                         <p className="text-[8px] font-black text-neutral-400 uppercase tracking-[0.2em] mb-1">Base Imponible</p>
                                                         <div className="flex items-end justify-end gap-1">
-                                                            <span className="text-2xl font-black text-blue-600 leading-tight">{baseImponible.toFixed(2).split('.')[0]}</span>
-                                                            <span className="text-sm font-black text-blue-600 mb-1">.{baseImponible.toFixed(2).split('.')[1]}€</span>
+                                                            <span className="text-base font-black text-blue-600 leading-tight">{baseImponible.toFixed(2).split('.')[0]}</span>
+                                                            <span className="text-xs font-black text-blue-600 mb-0.5">.{baseImponible.toFixed(2).split('.')[1]}€</span>
                                                         </div>
                                                     </div>
                                                 </div>
