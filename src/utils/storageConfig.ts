@@ -1,0 +1,2 @@
+export const ONEDRIVE_PATH = 'CLIENTES/PRESUPUESTOS PUERTAS';
+export const ONEDRIVE_FULL_PATH = 'c:/Users/asus/OneDrive/Escritorio/CLIENTES/PRESUPUESTOS PUERTAS';

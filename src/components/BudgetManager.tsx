@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDoorStore } from '../store/useDoorStore';
-import { exportBudgetAsJSON, loadBudgetFromJSON } from '../utils/budgetFileManager';
+import { saveBudgetToFileSystem, loadBudgetFromFileSystem } from '../utils/budgetFileManager';
 import type { SavedBudget } from '../types';
 
 export function BudgetManager() {
@@ -8,7 +8,7 @@ export function BudgetManager() {
     const [budgetName, setBudgetName] = useState('');
     const { doors, clientInfo, generalNotes, importBudget } = useDoorStore();
 
-    const handleSaveAs = () => {
+    const handleSaveAs = async () => {
         if (!budgetName.trim()) {
             alert('Por favor, introduce un nombre para el presupuesto.');
             return;
@@ -23,15 +23,21 @@ export function BudgetManager() {
             generalNotes,
         };
 
-        exportBudgetAsJSON(budget, budgetName);
-        setShowSaveModal(false);
-        setBudgetName('');
+        try {
+            const saved = await saveBudgetToFileSystem(budget, budgetName);
+            if (saved) {
+                setShowSaveModal(false);
+                setBudgetName('');
+            }
+        } catch (err) {
+            alert('Error al guardar el archivo.');
+        }
     };
 
     const handleOpen = async () => {
         try {
-            const budget = await loadBudgetFromJSON();
-            if (confirm(`¿Cargar el presupuesto "${budget.name}"? Los cambios actuales no guardados se perderán.`)) {
+            const budget = await loadBudgetFromFileSystem();
+            if (budget && confirm(`¿Cargar el presupuesto "${budget.name}"? Los cambios actuales no guardados se perderán.`)) {
                 importBudget(budget);
             }
         } catch (err) {
