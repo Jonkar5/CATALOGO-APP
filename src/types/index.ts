@@ -41,3 +41,12 @@ export interface ClientInfo {
     installationText?: string;
     taxText?: string;
 }
+
+export interface SavedBudget {
+    id: string;
+    name: string;
+    timestamp: number;
+    doors: Product[];
+    clientInfo: ClientInfo;
+    generalNotes: string;
+}

@@ -1,7 +1,7 @@
-// import { useState } from 'react'
 import { DoorInputForm } from './components/DoorInputForm';
 import { DocumentPreview } from './components/DocumentPreview';
 import { useDoorStore } from './store/useDoorStore';
+import { BudgetManager } from './components/BudgetManager';
 // import { roundToTwo } from './utils/math';
 
 function DoorList() {
@@ -179,21 +179,25 @@ function GeneralNotesEditor() {
 function App() {
   return (
     <div className="min-h-screen bg-neutral-50 p-8 print:p-0 print:bg-white print:min-h-0">
-      <div className="flex justify-between items-center mb-8 print:hidden">
-        <h1 className="text-3xl font-bold text-neutral-900">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 print:hidden">
+        <h1 className="text-3xl font-bold text-neutral-900 leading-tight">
           Generador de Catálogo de Productos
         </h1>
-        <button
-          onClick={() => {
-            if (window.confirm('¿Estás seguro de que quieres borrar todos los datos? Esta acción no se puede deshacer.')) {
-              useDoorStore.getState().resetAll();
-            }
-          }}
-          className="group flex items-center gap-2 px-4 py-2 text-xs font-medium text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-        >
-          <span className="group-hover:translate-x-1 transition-transform">🗑️</span>
-          Borrar Todo
-        </button>
+        <div className="flex items-center gap-4">
+          <BudgetManager />
+          <div className="w-px h-8 bg-neutral-200 mx-2 hidden sm:block"></div>
+          <button
+            onClick={() => {
+              if (window.confirm('¿Estás seguro de que quieres borrar todos los datos actuales? Esta acción no se puede deshacer.')) {
+                useDoorStore.getState().resetAll();
+              }
+            }}
+            className="group flex items-center gap-2 px-3 py-2 text-xs font-semibold text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+          >
+            <span className="group-hover:translate-x-0.5 transition-transform opacity-70">🗑️</span>
+            Limpiar Pantalla
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:block">
         {/* Input Form */}

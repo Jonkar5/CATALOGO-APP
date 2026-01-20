@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Door, ClientInfo } from '../types';
+import type { Door, ClientInfo, SavedBudget } from '../types';
 
 interface DoorState {
     doors: Door[];
@@ -15,6 +15,7 @@ interface DoorState {
     setClientInfo: (info: ClientInfo) => void;
     setEditingDoorId: (id: string | null) => void;
     resetAll: () => void;
+    importBudget: (budget: Partial<SavedBudget>) => void;
 }
 
 export const useDoorStore = create<DoorState>()(
@@ -69,6 +70,20 @@ export const useDoorStore = create<DoorState>()(
                     installationText: 'No incluida (salvo indicación)',
                     taxText: 'IVA 21% Desglosado'
                 }
+            }),
+            importBudget: (budget) => set({
+                doors: budget.doors || [],
+                clientInfo: budget.clientInfo || {
+                    name: '',
+                    address: '',
+                    phone: '',
+                    companyName: 'Tu Empresa S.L.',
+                    validityText: '15 días naturales',
+                    installationText: 'No incluida (salvo indicación)',
+                    taxText: 'IVA 21% Desglosado'
+                },
+                generalNotes: budget.generalNotes || '',
+                editingDoorId: null
             }),
         }),
         {
