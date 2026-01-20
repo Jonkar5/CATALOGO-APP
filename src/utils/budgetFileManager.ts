@@ -6,10 +6,15 @@ import type { SavedBudget } from '../types';
  */
 
 export const saveBudgetToFileSystem = async (budget: SavedBudget, suggestedName: string) => {
+    console.log('Attempting to save budget:', suggestedName);
     try {
-        // Check if the API is supported
-        if ('showSaveFilePicker' in window) {
-            const handle = await (window as any).showSaveFilePicker({
+        // More robust check for showSaveFilePicker
+        const hasSavePicker = typeof window.showSaveFilePicker === 'function';
+        console.log('File System Access API (showSaveFilePicker) available:', hasSavePicker);
+
+        if (hasSavePicker) {
+            console.log('Opening native save picker...');
+            const handle = await window.showSaveFilePicker({
                 suggestedName: `${suggestedName}.json`,
                 types: [{
                     description: 'Presupuesto JSON',
@@ -17,11 +22,14 @@ export const saveBudgetToFileSystem = async (budget: SavedBudget, suggestedName:
                 }],
             });
 
+            console.log('User selected file handle:', handle.name);
             const writable = await handle.createWritable();
             await writable.write(JSON.stringify(budget, null, 2));
             await writable.close();
+            console.log('File saved successfully via API');
             return true;
         } else {
+            console.warn('File System Access API NOT available, falling back to download');
             // Fallback to traditional download if API not supported
             const dataStr = JSON.stringify(budget, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
@@ -32,8 +40,11 @@ export const saveBudgetToFileSystem = async (budget: SavedBudget, suggestedName:
             return true;
         }
     } catch (err) {
-        if ((err as Error).name === 'AbortError') return false;
-        console.error('Error saving file:', err);
+        if ((err as Error).name === 'AbortError') {
+            console.log('User cancelled the save picker');
+            return false;
+        }
+        console.error('Error in saveBudgetToFileSystem:', err);
         throw err;
     }
 };
